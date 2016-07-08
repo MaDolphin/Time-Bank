@@ -1,0 +1,221 @@
+﻿@model TimePro.Models.ViewModel
+@{
+    ViewBag.Title = "ChatsIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="chrome-webstore-item" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+
+@using (Html.BeginForm("NotesFind", "Notes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+<div class="row-fluid">
+    <br /><br />
+    <div class="col-md-12">
+        <div class="row-fluid">
+            <div class="col-md-2">
+                @if (Model != null)
+                {
+                    if (Model.UserModel.UserPhoto != null)
+                    {
+                        <img width="140" height="140" class="img-circle" src=" @Url.Action("GetImage", "Users", new { Model.UserModel.UserID }) ">
+                    }
+                    else
+                    {
+                        <img alt="140x140" src="~/Image/user.jpg" class="img-circle" />
+                    }
+                }
+                <br /><br />
+                <blockquote>
+                    <ul class="nav nav-list">
+                        <li class="nav-header">
+                            <strong>我的</strong>
+                        </li>
+                        <li class="active">
+                            <a href="~/Users/UsersIndex">首页</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIndex">时间</a>
+                        </li>
+                        <li class="nav-header">
+                            <strong>功能</strong>
+                        </li>
+                        <li>
+                            <a href="~/Chats/ChatsIndex">通知</a>
+                        </li>
+                        <li>
+                            <a href="~/Users/UsersDetails">资料</a>
+                        </li>
+                    </ul>
+                </blockquote>
+            </div>
+            <br />
+            <div class="col-md-10">
+                <a href="~/Notes/NotesCreate" class="btn btn-large btn-success btn-default">添加项目</a>
+                <br /><br />
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a href="~/Users/UsersIndex">首页</a>
+                    </li>
+                    <li class="active">
+                        <a href="~/Chats/ChatsIndex">通知</a>
+                    </li>
+                    <li class="form-search navbar-right">
+                        <input class="input-medium search-query" type="text" name="search" /> <button type="submit" class="btn">查找</button>
+                    </li>
+                </ul>
+                <br /><br />
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><span class="glyphicon glyphicon-envelope"></span> To me</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-striped">
+                                    @foreach (var item in Model.ChatModel)
+                                    {
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => item.ChatFrom)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => item.ChatTime)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => item.ChatFlag)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                        break;
+                                    }
+                                    @foreach (var item in Model.ChatModel)
+                                    {
+                                        if (item.ChatTo == Model.UserModel.UserID)
+                                        {
+                                            if (item.ChatFlag == 0)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ChatFrom)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ChatTime)
+                                                    </td>
+                                                    <td>
+                                                        <span class="label label-danger">未读</span>
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("查看", "ChatsDetailsTo", new { id = item.ChatID })
+                                                    </td>
+                                                </tr>
+                                            }
+                                            if (item.ChatFlag == 1)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ChatFrom)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ChatTime)
+                                                    </td>
+                                                    <td>
+                                                        <span class="label label-success">已读</span>
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("查看", "ChatsDetailsTo", new { id = item.ChatID })
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><span class="glyphicon glyphicon-envelope"></span> From me</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        @foreach (var t in Model.ChatModel)
+                                        {
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(modelItem => t.ChatTo)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(modelItem => t.ChatTime)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(modelItem => t.ChatFlag)
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                            break;
+                                        }
+
+                                        @foreach (var t in Model.ChatModel)
+                                        {
+                                            if (t.ChatFrom == Model.UserModel.UserID)
+                                            {
+                                                if (t.ChatFlag == 0)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => t.ChatTo)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => t.ChatTime)
+                                                        </td>
+                                                        <td>
+                                                            <span class="label label-danger">未读</span>
+                                                        </td>
+                                                        <td>
+                                                            @Html.ActionLink("查看", "ChatsDetailsFrom", new { id = t.ChatID })
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                if (t.ChatFlag == 1)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => t.ChatTo)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => t.ChatTime)
+                                                        </td>
+                                                        <td>
+                                                            <span class="label label-success">已读</span>
+                                                        </td>
+                                                        <td>
+                                                            @Html.ActionLink("查看", "ChatsDetailsFrom", new { id = t.ChatID })
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

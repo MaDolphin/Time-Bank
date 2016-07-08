@@ -1,0 +1,140 @@
+﻿@model TimePro.Models.ViewModel
+
+@{
+    ViewBag.Title = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("NotesFind", "Notes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="chrome-webstore-item" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+
+<div class="row-fluid">
+    <br /><br />
+    <div class="col-md-12">
+        <div class="row-fluid">
+            <div class="col-md-2">
+                @if (Model.UserModel.UserPhoto != null)
+                {
+                    <img width="140" height="140" class="img-circle" src=" @Url.Action("GetImage", "Users", new { Model.UserModel.UserID }) ">
+                }
+                else {
+                    <img alt="140x140" src="~/Image/user.jpg" class="img-circle" />
+                }
+                <br /><br />
+                <blockquote>
+                    <ul class="nav nav-list">
+                        <li class="nav-header">
+                            <strong>我的</strong>
+                        </li>
+                        <li class="active">
+                            <a href="~/Users/UsersIndex">首页</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIndex">时间</a>
+                        </li>
+                        <li class="nav-header">
+                            <strong>功能</strong>
+                        </li>
+                        <li>
+                            <a href="~/Chats/ChatsIndex">通知</a>
+                        </li>
+                        <li>
+                            <a href="~/Users/UsersDetails">资料</a>
+                        </li>
+                    </ul>
+                </blockquote>
+            </div>
+            <br />
+            <div class="col-md-10">
+                <a href="~/Notes/NotesCreate" class="btn btn-large btn-success btn-default">添加项目</a>
+                <br /><br />
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="~/Notes/NotesAll">所有可参与的项目</a>
+                    </li>
+                    <li>
+                        <a href="~/Notes/NotesIndex">我的项目</a>
+                    </li>
+                    <li>
+                        <a href="~/Notes/NotesIng">正在进行的项目</a>
+                    </li>
+                    <li>
+                        <a href="~/Notes/NotesFinish">已完成的项目</a>
+                    </li>
+                    <li class="form-search navbar-right">
+                        <input class="input-medium search-query" type="text" name="search" /> <button type="submit" class="btn">查找</button>
+                    </li>
+                </ul>
+                <br /><br />
+                <div class="row-fluid">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            @foreach (var item in Model.NoteModel)
+                            {
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => item.UserID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => item.NoteTitle)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => item.NoteLabel)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => item.NoteTime)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => item.NoteCreateTime)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => item.NoteFlag)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                break;
+                            }
+                            @foreach (var item in Model.NoteModel)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NoteTitle)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NoteLabel)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NoteTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NoteCreateTime)
+                                    </td>
+                                    <td>
+                                        <span class="label label-default">可参与</span>
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("查看", "NotesAllDetails", new { id = item.NoteID })
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

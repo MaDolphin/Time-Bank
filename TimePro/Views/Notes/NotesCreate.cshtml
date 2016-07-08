@@ -1,0 +1,335 @@
+﻿@model TimePro.Models.ViewModel1
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="chrome-webstore-item" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>*@
+
+<!-- include libraries(jQuery, bootstrap, fontawesome) -->
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+@*<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">*@
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<!-- include summernote css/js-->
+<link href="~/css/summernote.css" rel="stylesheet" />
+<script src="~/Scripts/summernote.js"></script>
+
+<script src="~/Scripts/summernote-zh-CN.js"></script>
+
+@using (Html.BeginForm("NotesCreate", "Notes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <br /><br />
+        <div class="col-md-12">
+            <div class="row-fluid">
+                <div class="col-md-2">
+                    @if (Model.UserModel != null)
+                    {
+                        if (Model.UserModel.UserPhoto != null)
+                        {
+                            <img width="140" height="140" class="img-circle" src=" @Url.Action("GetImage", "Users", new { Model.UserModel.UserID }) ">
+                        }
+                        else
+                        {
+                            <img alt="140x140" src="~/Image/user.jpg" class="img-circle" />
+                        }
+                    }
+                    <br /><br />
+                    <blockquote>
+                        <ul class="nav nav-list">
+                            <li class="nav-header">
+                                <strong>我的</strong>
+                            </li>
+                            <li class="active">
+                                <a href="~/Users/UsersIndex">首页</a>
+                            </li>
+                            <li>
+                                <a href="~/Notes/NotesIndex">时间</a>
+                            </li>
+                            <li class="nav-header">
+                                <strong>功能</strong>
+                            </li>
+                            <li>
+                                <a href="~/Chats/ChatsIndex">通知</a>
+                            </li>
+                            <li>
+                                <a href="~/Users/UsersDetails">资料</a>
+                            </li>
+                        </ul>
+                    </blockquote>
+                </div>
+                <br />
+                <div class="col-md-10">
+                    <a href="~/Notes/NotesCreate" class="btn btn-large btn-success btn-default">添加项目</a>
+                    <br /><br />
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#">添加项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesAll">所有可参与的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIndex">我的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIng">正在进行的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesFinish">已完成的项目</a>
+                        </li>
+                    </ul>
+                    <br /><br />
+                    <div class="row-fluid">
+                        <div class="col-md-12">
+                            <div class="form-horizontal">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NoteModel.NoteTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NoteModel.NoteTitle, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteLabel, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NoteModel.NoteLabel, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NoteModel.NoteLabel, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NoteModel.NoteTime, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NoteModel.NoteTime, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.NoteModel.NoteContent, new { id = "summernote" })
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <input type="submit" value="确定" class="btn btn-large btn-primary btn-default" onclick="UpLoad()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+        $('#summernote').summernote({
+            lang: 'zh-CN',
+            height: 300,
+            onImageUpload: function (files, editor, welEditable) {
+                uploadImages(files[0], editor, welEditable);
+            }
+        });
+
+        
+        uploadImages = function (files, editor, $editable) {
+
+            var formData = new FormData();
+            formData.append("file", files[0]);
+
+            $.ajax({
+                url: "../Notes/UploadImage",
+                data: formData,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (imageUrl) {
+
+                    if (!imageUrl) {
+
+                        // handle error
+
+                        return;
+                    }
+                    editor.insertImage($editable, imageUrl);
+                },
+                error: function () {
+
+                    // handle error
+                }
+            });
+    };
+
+    //    function sendFile(files, editor, welEditable) {
+    //        data = new FormData();
+    //        data.append("file", files);
+    //        $.ajax({
+    //            data: data,
+    //            type: "POST",
+    //            url: "/lol/upload.do",
+    //            cache: false,
+    //            contentType: false,
+    //            processData: false,
+    //            success: function (data) {
+    //                alert(data.fileName);
+    //                editor.insertImage(welEditable, "img/" + data.fileName);
+    //            },
+    //            error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //                alert(XMLHttpRequest.status);
+    //                alert(XMLHttpRequest.readyState);
+    //                alert(textStatus);
+    //            }
+    //        });
+    //    }
+    //function sendFile(file, editor, $editable){
+    //    $(".note-toolbar.btn-toolbar").append('正在上传图片');
+    //    var filename = false;
+    //    try{
+    //        filename = file['name'];
+    //    } catch(e){filename = false;}
+    //    if(!filename){$(".note-alarm").remove();}
+    //    //以上防止在图片在编辑器内拖拽引发第二次上传导致的提示错误
+    //    var ext = filename.substr(filename.lastIndexOf("."));
+    //    ext = ext.toUpperCase();
+    //    var timestamp = new Date().getTime();
+    //    var name = timestamp+"_"+$("#summernote").attr('aid')+ext;
+    //    //name是文件名，自己随意定义，aid是我自己增加的属性用于区分文件用户
+    //    data = new FormData();
+    //    data.append("file", file);
+    //    data.append("key",name);
+    //    data.append("token",$("#summernote").attr('token'));
+    //    $.ajax({
+    //        data: data,
+    //        type: "POST",
+    //        url: "~/Photo",
+    //        cache: false,
+    //        contentType: false,
+    //        processData: false,
+    //        success: function(data) {
+    //            //data是返回的hash,key之类的值，key是定义的文件名
+    //            editor.insertImage($editable, $("#summernote").attr('a')+data['key']);
+    //            //url-head是自己七牛云的domain
+    //            $(".note-alarm").html("上传成功,请等待加载");
+    //            setTimeout(function(){$(".note-alarm").remove();},3000);
+    //        },
+    //        error:function(){
+    //            $(".note-alarm").html("上传失败");
+    //            setTimeout(function(){$(".note-alarm").remove();},3000);
+    //        }
+    //    });
+    //}
+    //$(document).ready(function() {
+    //    $('#summernote').summernote({
+    //        height: 300,
+    //        focus:false,
+    //        lang:'zh-CN',
+    //        onImageUpload: function(files, editor, $editable) {
+    //            sendFile(files[0],editor,$editable);
+    //        }
+    //        //方法重载
+    //    });
+    //});
+
+
+
+
+        /* function sendFile(file, editor,welEditable) {  
+         console.log("file="+file);  
+         console.log("editor="+editor);  
+         console.log("welEditable="+welEditable);  
+           data = new FormData();  
+           data.append("blog_image[image]", file);  
+           $.ajax({  
+             url: 'blog_images.jsp',  
+             data: data,  
+             cache: false,  
+             contentType: false,  
+             processData: false,  
+             type: 'POST',  
+             success: function(data){  
+               editor.insertImage(welEditable, data.url);  
+             }  
+           });  
+         }  
+        */
+        //$('#summernote').summernote({
+        //    height: 300, /*高さを指定*/
+        //    lang: 'zh-CN', // default: 'en-US'  
+        //    focus: true,
+        //    onImageUpload: function (files, editor, $editable) {
+        //        sendFile(files[0], editor, $editable);
+        //    }
+
+
+        //});
+
+
+        //function sendFile(file, editor, $editable) {
+        //    $(".note-toolbar.btn-toolbar").append('正在上传图片');
+        //    var filename = false;
+        //    try {
+        //        filename = file['name'];
+        //        alert(filename);
+        //    } catch (e) { filename = false; }
+        //    if (!filename) { $(".note-alarm").remove(); }
+        //    //以上防止在图片在编辑器内拖拽引发第二次上传导致的提示错误  
+        //    var ext = filename.substr(filename.lastIndexOf("."));
+        //    ext = ext.toUpperCase();
+        //    var timestamp = new Date().getTime();
+        //    var name = timestamp + "_" + $("#summernote").attr('aid') + ext;
+        //    //name是文件名，自己随意定义，aid是我自己增加的属性用于区分文件用户  
+        //    data = new FormData();
+        //    data.append("file", file);
+        //    data.append("key", name);
+        //    data.append("token", $("#summernote").attr('token'));
+
+        //    $.ajax({
+        //        data: data,
+        //        type: "POST",gg
+        //        url: "/summernote/fileupload", //图片上传出来的url，返回的是图片上传后的路径，http格式  
+        //        contentType: "json",
+        //        cache: false,
+        //        processData: false,
+        //        success: function (data) {
+        //            //data是返回的hash,key之类的值，key是定义的文件名  
+        //            alert(data);
+        //            //把图片放到编辑框中。editor.insertImage 是参数，写死。后面的http是网上的图片资源路径。  
+        //            //网上很多就是这一步出错。  
+        //            $('#summernote').summernote('editor.insertImage', "http://res.cloudinary.com/demo/image/upload/butterfly.jpg");
+
+        //            $(".note-alarm").html("上传成功,请等待加载");
+        //            setTimeout(function () { $(".note-alarm").remove(); }, 3000);
+        //        },
+        //        error: function () {
+        //            $(".note-alarm").html("上传失败");
+        //            setTimeout(function () { $(".note-alarm").remove(); }, 3000);
+        //        }
+        //    });
+        //}
+        
+</script>
+}
+
+
+
+
+
+
+
+
+

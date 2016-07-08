@@ -1,0 +1,198 @@
+﻿@model TimePro.Models.ViewModel1
+
+@{
+    ViewBag.Title = "FinishDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="chrome-webstore-item" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+
+<!-- include libraries(jQuery, bootstrap, fontawesome) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+
+<!-- include summernote css/js-->
+<link href="~/Content/summernote.css" rel="stylesheet" />
+<script src="~/Scripts/summernote.js"></script>
+
+<script src="~/Scripts/summernote-zh-CN.js"></script>
+
+@using (Html.BeginForm("NotesFinishDetails", "Notes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <br /><br />
+        <div class="col-md-12">
+            <div class="row-fluid">
+                <div class="col-md-2">
+                    @if (Model.UserModel != null)
+                    {
+                        if (Model.UserModel.UserPhoto != null)
+                        {
+                            <img width="140" height="140" class="img-circle" src=" @Url.Action("GetImage", "Users", new { Model.UserModel.UserID }) ">
+                        }
+                        else
+                        {
+                            <img alt="140x140" src="~/Image/user.jpg" class="img-circle" />
+                        }
+                    }
+                    <br /><br />
+                    <blockquote>
+                        <ul class="nav nav-list">
+                            <li class="nav-header">
+                                <strong>我的</strong>
+                            </li>
+                            <li class="active">
+                                <a href="~/Users/UsersIndex">首页</a>
+                            </li>
+                            <li>
+                                <a href="~/Notes/NotesIndex">时间</a>
+                            </li>
+                            <li class="nav-header">
+                                <strong>功能</strong>
+                            </li>
+                            <li>
+                                <a href="~/Chats/ChatsIndex">通知</a>
+                            </li>
+                            <li>
+                                <a href="~/Users/UsersDetails">资料</a>
+                            </li>
+                        </ul>
+                    </blockquote>
+                </div>
+                <br />
+                <div class="col-md-10">
+                    <a href="~/Notes/NotesCreate" class="btn btn-large btn-success btn-default">添加项目</a>
+                    <br /><br />
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#">待确认的项目详情</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesAll">所有可参与的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIndex">我的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIng">正在进行的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesFinish">已完成的项目</a>
+                        </li>
+                    </ul>
+                    <br /><br />
+                    <div class="row-fluid">
+                        <div class="form-horizontal">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.NoteModel.NoteID)
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NoteModel.NoteTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.NoteModel.NoteTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NoteModel.NoteTitle, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NoteModel.NoteLabel, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.NoteModel.NoteLabel, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NoteModel.NoteLabel, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NoteModel.NoteTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.NoteModel.NoteTime, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NoteModel.NoteTime, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NoteModel.NoteContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.Raw(@HttpUtility.HtmlDecode(@Model.NoteModel.NoteContent))
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <input type="submit" value="确认完成此项目" class="btn btn-large btn-primary btn-default" />
+                                <button class="btn btn-primary btn-large" data-toggle="modal" data-target="#myModal">留言</button>
+                                <a href="~/Notes/NotesIng" class="btn btn-large btn-primary btn-default">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("ChatsCreate", "Chats", FormMethod.Post))
+{   @Html.AntiForgeryToken()
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        留言
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ChatModel.ChatFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => Model.UserModel.UserID, new { @readOnly = "readOnly" })
+                                @Html.ValidationMessageFor(model => model.ChatModel.ChatFrom, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ChatModel.ChatTo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => Model.NoteModel.UserID, new { @readOnly = "readOnly" })
+                                @Html.ValidationMessageFor(model => model.ChatModel.ChatTo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ChatModel.ChatContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.ChatModel.ChatContent, new { id = "text" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <input type="submit" value="提交" class="btn btn-large btn-primary btn-default" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+}

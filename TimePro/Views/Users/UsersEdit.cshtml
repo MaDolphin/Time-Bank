@@ -1,0 +1,181 @@
+﻿@model TimePro.Models.User
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+    <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+    <link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="chrome-webstore-item" media="screen">
+    <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link href="~/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/fileinput.min.js"></script>
+@using (Html.BeginForm("UsersEdit", "Users", FormMethod.Post,new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <br /><br />
+        <div class="col-md-12">
+            <div class="row-fluid">
+                <div class="col-md-2">
+                    @if (Model.UserPhoto != null)
+                    {
+                        <img width="140" height="140" class="img-circle" src=" @Url.Action("GetImage", "Users", new { Model.UserID }) ">
+                    }
+                    else {
+                        <img alt="140x140" src="~/Image/user.jpg" class="img-circle" />
+                    }
+                    
+                    <br /><br />
+                    <blockquote>
+                        <ul class="nav nav-list">
+                            <li class="nav-header">
+                                <strong>我的</strong>
+                            </li>
+                            <li class="active">
+                                <a href="~/Users/UsersIndex">首页</a>
+                            </li>
+                            <li>
+                                <a href="~/Notes/NotesIndex">时间</a>
+                            </li>
+                            <li class="nav-header">
+                                <strong>功能</strong>
+                            </li>
+                            <li>
+                                <a href="~/Chats/ChatsIndex">通知</a>
+                            </li>
+                            <li>
+                                <a href="~/Users/UsersDetails">资料</a>
+                            </li>
+                        </ul>
+                    </blockquote>
+                </div>
+                <br />
+                <div class="col-md-10">
+                    <a href="~/Notes/NotesCreate" class="btn btn-large btn-success btn-default">添加项目</a>
+                    <br /><br />
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#">修改资料</a>
+                        </li>
+                        <li>
+                            <a href="~/Users/UsersIndex">首页</a>
+                        </li>
+                        <li>
+                            <a href="~/Chats/ChatsIndex">通知</a>
+                        </li>
+                    </ul>
+                    <br /><br />
+                    <div class="row-fluid">
+                        <div class="col-md-12">
+                            <div class="form-horizontal">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.UserID)
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserCode, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserPhoto, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-4">
+                                        @*@Html.EditorFor(model => model.UserPhoto, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserPhoto, "", new { @class = "text-danger" })*@
+                                        <input id="input-1" type="file" class="file" name="Image" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserAge, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserAge, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserAge, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserSex, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserSex, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserSex, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserPwd, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserPwd, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserPwd, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserStatus, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserStatus, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserTel, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserTel, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserTel, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserAddress, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserHobby, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserHobby, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserHobby, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                     <input type="submit" value="确定" class="btn btn-large btn-primary btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

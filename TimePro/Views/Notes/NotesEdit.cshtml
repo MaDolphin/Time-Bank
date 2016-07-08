@@ -1,0 +1,179 @@
+﻿@model TimePro.Models.ViewModel1
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+<link href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css" rel="chrome-webstore-item" media="screen">
+<script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>*@
+
+<!-- include libraries(jQuery, bootstrap, fontawesome) -->
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+@*<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">*@
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- include summernote css/js-->
+<link href="~/Content/summernote.css" rel="stylesheet" />
+<script src="~/Scripts/summernote.js"></script>
+
+<script src="~/Scripts/summernote-zh-CN.js"></script>
+
+@using (Html.BeginForm("NotesEdit", "Notes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <br /><br />
+        <div class="col-md-12">
+            <div class="row-fluid">
+                <div class="col-md-2">
+                    @if (Model.UserModel != null)
+                    {
+                        if (Model.UserModel.UserPhoto != null)
+                        {
+                            <img width="140" height="140" class="img-circle" src=" @Url.Action("GetImage", "Users", new { Model.UserModel.UserID }) ">
+                        }
+                        else
+                        {
+                            <img alt="140x140" src="~/Image/user.jpg" class="img-circle" />
+                        }
+                    }
+                    <br /><br />
+                    <blockquote>
+                        <ul class="nav nav-list">
+                            <li class="nav-header">
+                                <strong>我的</strong>
+                            </li>
+                            <li class="active">
+                                <a href="~/Users/UsersIndex">首页</a>
+                            </li>
+                            <li>
+                                <a href="~/Notes/NotesIndex">时间</a>
+                            </li>
+                            <li class="nav-header">
+                                <strong>功能</strong>
+                            </li>
+                            <li>
+                                <a href="~/Chats/ChatsIndex">通知</a>
+                            </li>
+                            <li>
+                                <a href="~/Users/UsersDetails">资料</a>
+                            </li>
+                        </ul>
+                    </blockquote>
+                </div>
+                <br />
+                <div class="col-md-10">
+                    <a href="~/Notes/NotesCreate" class="btn btn-large btn-success btn-default">添加项目</a>
+                    <br /><br />
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#">修改项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesAll">所有可参与的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIndex">我的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesIng">正在进行的项目</a>
+                        </li>
+                        <li>
+                            <a href="~/Notes/NotesFinish">已完成的项目</a>
+                        </li>
+                    </ul>
+                    <br /><br />
+                    <div class="row-fluid">
+                        <div class="col-md-12">
+                            <div class="form-horizontal">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.NoteModel.NoteID)
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NoteModel.NoteTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NoteModel.NoteTitle, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteLabel, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NoteModel.NoteLabel, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NoteModel.NoteLabel, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NoteModel.NoteTime, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NoteModel.NoteTime, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NoteModel.NoteContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.NoteModel.NoteContent, new { id = "summernote" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <input type="submit" value="确定" class="btn btn-large btn-primary btn-default" onclick="UpLoad()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#summernote').summernote({
+            lang: 'zh-CN',
+            height: 300,
+            onImageUpload: function (files, editor, welEditable) {
+                uploadImages(files[0], editor, welEditable);
+            }
+        });
+
+
+        uploadImages = function (files, editor, $editable) {
+
+            var formData = new FormData();
+            formData.append("file", files[0]);
+
+            $.ajax({
+                url: "../Notes/UploadImage",
+                data: formData,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (imageUrl) {
+
+                    if (!imageUrl) {
+
+                        // handle error
+
+                        return;
+                    }
+                    editor.insertImage($editable, imageUrl);
+                },
+                error: function () {
+
+                    // handle error
+                }
+            });
+        };
+    </script>
+}
